@@ -6,9 +6,8 @@ cd "${0%/*}"
 
 # this script requires four parameters
 
-SUITE="${1:-trixie}"
 
-CONT=$(buildah from localhost/debian-systemd-${SUITE}:latest)
+CONT=$(buildah from debian:trixie)
 
 buildah copy $CONT setup/ /setup
 

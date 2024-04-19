@@ -3,7 +3,7 @@
   name = root
 
 [core]
-  editor = vim
+  editor = nano
 [log]
   date = iso
 [alias]

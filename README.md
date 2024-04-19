@@ -9,15 +9,6 @@ Intrexx Portal Patch container.
 * PostgreSQL
 * Java 17 / Java 21
 
-The installation does not contain any portal.
-
-## Base image
-
-The base image is `localhost/debian-systemd:trixie`
-
-The base image is provided by the [debian-systemd](https://github.com/veita/cont-debian-systemd)
-project.
-
 ## Building the container image
 
 ```bash
@@ -37,13 +28,13 @@ cd intrexx-portal-patch-containerr
 
 * /portal
 
-    Das Portal das gepached werden soll. Verzeichnis, ZiP, tar, tar.gz
+    Das Portal das gepached werden soll. Verzeichnis, zip, tar, tar.gz
 
 * /build
 
     Enthält entweder die ix-portal-updater-cleaner.jar oder das git repro:
 
-    git clone von <gitea@gitserver.dev.unitedplanet.de>:stefanm/ix-portal-updater-cleaner.git
+    git clone von gitea@gitserver.dev.unitedplanet.de:stefanm/ix-portal-updater-cleaner.git
 
 * /export
 
@@ -53,12 +44,11 @@ cd intrexx-portal-patch-containerr
 
 * NO_BUILD
 
-    Wenn gesetzt und != "false" dann wird /build/gradle shadowJar zum erzeugen der ix-portal-updater-cleaner.jar angewendet und in /build das git
-    repro gecloned wurde.
+    Wenn nicht gesetzt oder == "false" dann wird /build/gradle shadowJar zum erzeugen der ix-portal-updater-cleaner.jar angewendet.
 
 Run the container, e.g. with
 
 ```bash
-podman run --rm -v ./build:/build -v ./export:/expot -v ./portal:/portal -v ./setup:/intrexx-setup ./localhost/intrexx-portal-patch-container:latest
-
+podman run --detach  --rm -v ./build:/build -v ./export:/export -v ./portal:/portal -v ./setup:/setup-intrexx --name portalPatch localhost/intrexx-portal-patch-container:latest
+podman exec -it portalPatch /usr/bin/bash -c patchPortal.sh
 ```

@@ -20,5 +20,4 @@ buildah config --volume /export $CONT
 
 buildah config --cmd '/sbin/init' $CONT
 
-
 buildah commit --rm $CONT localhost/intrexx-portal-patch-container:latest
