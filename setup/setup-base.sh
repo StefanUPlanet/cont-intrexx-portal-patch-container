@@ -10,7 +10,7 @@ apt-get update -qy
 apt-get upgrade -qy
 
 # install Git and ImageMagick
-apt-get install -qy git mc imagemagick
+apt-get install -qy git mc imagemagick openjdk-21-jdk openjdk-21-jre openjdk-17-jdk openjdk-17-jre unzip
 
 # Postfix is needed to prevent excessive package pulls (Exim etc.) later
 debconf-set-selections <<< "postfix postfix/mailname string 'localhost'"
@@ -25,10 +25,10 @@ apt-get update -qy
 apt-get install -qy postgresql
 
 sed -i 's/^port.*$/port = 5432/g' /etc/postgresql/*/main/postgresql.conf
-sed -i -r 's/(.*127\.0\.0\.1\/32\s+)md5$/\1trust/g' /etc/postgresql/*/main/pg_hba.conf
-sed -i -r 's/(.*::1\/128\s+)md5$/\1trust/g' /etc/postgresql/*/main/pg_hba.conf
-sed -i -r 's/(.*127\.0\.0\.1\/32\s+)scram-sha-256$/\1trust/g' /etc/postgresql/*/main/pg_hba.conf
-sed -i -r 's/(.*::1\/128\s+)scram-sha-256$/\1trust/g' /etc/postgresql/*/main/pg_hba.conf
+#sed -i -r 's/(.*127\.0\.0\.1\/32\s+)md5$/\1trust/g' /etc/postgresql/*/main/pg_hba.conf
+#sed -i -r 's/(.*::1\/128\s+)md5$/\1trust/g' /etc/postgresql/*/main/pg_hba.conf
+#sed -i -r 's/(.*127\.0\.0\.1\/32\s+)scram-sha-256$/\1trust/g' /etc/postgresql/*/main/pg_hba.conf
+#sed -i -r 's/(.*::1\/128\s+)scram-sha-256$/\1trust/g' /etc/postgresql/*/main/pg_hba.conf
 
 $(shopt -s dotglob ; cp /etc/skel/* /var/lib/postgresql/)
 
@@ -36,9 +36,38 @@ $(shopt -s dotglob ; cp /etc/skel/* /var/lib/postgresql/)
 systemctl enable postfix
 systemctl enable postgresql
 
+#install gradle 8.6
+
+if [ -d '/tmp-gradle' ]
+then
+    rm -rf /tmp-gradle
+fi
+
+mkdir /tmp-gradle
+cd /tmp-gradle
+wget https://services.gradle.org/distributions/gradle-8.6-bin.zip
+
+unzip gradle-8.6-bin.zip
+
+mv gradle-8.6 /opt/gradle
+
+echo "export PATH=/opt/gradle/bin:${PATH}" | tee /etc/profile.d/gradle.sh
+
+chmod +x /etc/profile.d/gradle.sh
+
+source /etc/profile.d/gradle.sh
+
+gradle -v
+
+cd /
+
+rm -rf /tmp-gradle
+
+
 # cleanup
 apt-get clean -qy
 apt-get autoremove -qy
+
 
 # modify .bashrc for root
 cat << EOF >> /root/.bashrc
@@ -47,8 +76,6 @@ alias p='cd /opt/intrexx/org/*/'
 alias pl='less /opt/intrexx/org/*/log/portal.log'
 EOF
 
-# add Intrexx user
-useradd -m -s /bin/bash --uid 1000 intrexx
-
 # cleanup
 rm -rf /tmp/* /var/tmp/*
+
