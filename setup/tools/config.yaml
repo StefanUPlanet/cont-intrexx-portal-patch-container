@@ -1,9 +1,0 @@
----
-setupDir: /setup-intrexx
-installBaseDir: /opt
-portalDir: /portal
-exportDir: /export
-tmpDir: /intrexx-tmp
-daemonUser: root
-track: STEADY
-jreHome: java/packaged/linux/amd64

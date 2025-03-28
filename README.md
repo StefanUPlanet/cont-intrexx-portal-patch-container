@@ -1,53 +1,20 @@
-# Intrexx
+# Blank Portal Patchen auf aktuelle Version
 
-Intrexx Portal Patch container.
+Required:
 
-## Services
+podman
 
-- SSHD
-- Postfix
-- PostgreSQL
-- Java 17 / Java 21
+## Installation
 
-## Building the container image
+im container Verzeichnis:
 
-```bash
-git clone git@github.com:StefanUPlanet/cont-intrexx-portal-patch-container.git intrexx-portal-patch-container
-cd intrexx-portal-patch-container
-./build-base-image.sh
-./build-image.sh
-```
+- Wenn noch nicht gemacht
 
-## Running the container
+  - ./build-base-image.sh ausführen
+  - ./build-image.sh ausführen
 
-### Reguired Volumes
+Im patch Verzeichnis
 
-- /setup-intrexx
+build.sh URL-Setup-Zielversion URL-Setup-VonVersion IntrexxArchivUser
 
-  Intrexx Setup, entweder entpackt in einem Verzeichnis o. als tar.gz
-
-- /portal
-  Das Portal das gepached werden soll. Verzeichnis, zip, tar, tar.gz
-
-- /build
-
-  Enthält entweder die ix-portal-updater-cleaner.jar oder das git repro:
-
-  git clone von gitea@gitserver.dev.unitedplanet.de:stefanm/ix-portal-updater-cleaner.git
-
-- /export
-
-  Verzeichnis wo Portal export gespeichert werden soll
-
-### Environment Variables
-
-- NO_BUILD
-
-  Wenn nicht gesetzt oder == "false" dann wird /build/gradle shadowJar zum erzeugen der ix-portal-updater-cleaner.jar angewendet.
-
-Run the container, e.g. with
-
-```bash
-podman run --detach  --rm -v ./build:/build -v ./export:/export -v ./portal:/portal -v ./setup:/setup-intrexx --name portalPatch localhost/intrexx-portal-patch-container:latest
-podman exec -it portalPatch /usr/bin/bash -c /tools/patchPortal.sh
-```
+ausführen Sie README.md im patch Verzeichnis

@@ -13,4 +13,8 @@ known_hosts
 
 pod/
 license.cfg
-
+build/
+export/
+portal/
+setup/
+tmp/
