@@ -2,7 +2,9 @@
 
 Required:
 
-podman
+- podman
+- Zugriff auf gitea
+  gitea@gitserver.dev.unitedplanet.de:stefanm/ix-portal-updater-cleaner.git
 
 ## Installation
 
