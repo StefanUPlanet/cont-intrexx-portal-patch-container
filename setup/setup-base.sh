@@ -113,13 +113,14 @@ then
     rm -rf /tmp-gradle
 fi
 
+gradleV="8.13"
 mkdir /tmp-gradle
 cd /tmp-gradle
-wget https://services.gradle.org/distributions/gradle-8.6-bin.zip
+wget https://services.gradle.org/distributions/gradle-${gradleV}-bin.zip
 
-unzip gradle-8.6-bin.zip
+unzip gradle-${gradleV}-bin.zip
 
-mv gradle-8.6 /opt/gradle
+mv gradle-${gradleV} /opt/gradle
 
 echo "export PATH=/opt/gradle/bin:${PATH}" | tee /etc/profile.d/gradle.sh
 
